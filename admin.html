@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal | Smart Community Hall Booking System</title>
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap">
+    <!-- Chart.js for Admin Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/forms.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="nav-brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>Smart Community Hall</h1>
+                    <span style="color: var(--gold-light);">Central Administration Portal</span>
+                </div>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link">Main Website</a></li>
+                <li><a href="halls.html" class="nav-link">Hall Catalog</a></li>
+                <li><a href="admin.html" class="nav-link active">Admin Dashboard</a></li>
+            </ul>
+
+            <div class="nav-actions" id="nav-actions">
+                <!-- Dynamically populated by auth.js -->
+            </div>
+
+            <button class="mobile-menu-btn" aria-label="Toggle Navigation">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Admin Dashboard Container -->
+    <section class="dashboard-page">
+        <div class="container-fluid" style="max-width: 1380px; margin: 0 auto;">
+            <div class="dashboard-layout">
+                
+                <!-- Admin Sidebar Navigation -->
+                <aside class="dashboard-sidebar">
+                    <div class="user-profile-card">
+                        <div class="user-avatar-large" style="background: var(--gold-gradient); color: var(--navy-darker);">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </div>
+                        <h3>Administrator</h3>
+                        <p>Central Municipal Authority</p>
+                    </div>
+
+                    <div class="sidebar-nav">
+                        <div class="sidebar-nav-item active" data-tab="overview">
+                            <i class="fa-solid fa-chart-pie"></i>
+                            <span>Overview & Analytics</span>
+                        </div>
+                        <div class="sidebar-nav-item" data-tab="halls">
+                            <i class="fa-solid fa-landmark"></i>
+                            <span>Hall Management</span>
+                        </div>
+                        <div class="sidebar-nav-item" data-tab="bookings">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <span>All Booking Requests</span>
+                        </div>
+                        <div class="sidebar-nav-item" data-tab="maintenance">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                            <span>Maintenance Schedules</span>
+                        </div>
+                        <div class="sidebar-divider"></div>
+                        <div class="sidebar-nav-item" onclick="openAddHallModal()" style="color: var(--gold-dark); font-weight: 600;">
+                            <i class="fa-solid fa-plus-circle"></i>
+                            <span>+ Add New Hall</span>
+                        </div>
+                        <div class="sidebar-nav-item" onclick="openScheduleMaintenanceModal()" style="color: #d97706; font-weight: 600;">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <span>Schedule Maintenance</span>
+                        </div>
+                        <div class="sidebar-divider"></div>
+                        <div class="sidebar-nav-item" onclick="Auth.logout()" style="color: var(--danger);">
+                            <i class="fa-solid fa-power-off"></i>
+                            <span>Admin Sign Out</span>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Content Pane -->
+                <main class="dashboard-content">
+                    
+                    <!-- Top Action Bar -->
+                    <div class="dashboard-topbar">
+                        <div class="dashboard-title">
+                            <h2>Admin Management Console</h2>
+                            <p>Monitor hall inventory, review reservation requests, schedule facility maintenance, and track civic revenue.</p>
+                        </div>
+                        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                            <button onclick="openAddHallModal()" class="btn btn-primary btn-sm">
+                                <i class="fa-solid fa-plus"></i> Add New Hall
+                            </button>
+                            <button onclick="openScheduleMaintenanceModal()" class="btn btn-navy btn-sm">
+                                <i class="fa-solid fa-wrench"></i> Schedule Maintenance
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- TAB 1: OVERVIEW & ANALYTICS -->
+                    <div id="tab-overview" class="dashboard-tab-pane" style="display: block;">
+                        <!-- KPI Metric Cards Grid -->
+                        <div class="stats-cards-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon icon-blue">
+                                    <i class="fa-solid fa-landmark"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <h4>Total Venues</h4>
+                                    <div class="stat-number" id="admin-kpi-halls">0</div>
+                                </div>
+                            </div>
+
+                            <div class="stat-card">
+                                <div class="stat-icon icon-gold">
+                                    <i class="fa-solid fa-calendar-check"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <h4>Total Bookings</h4>
+                                    <div class="stat-number" id="admin-kpi-bookings">0</div>
+                                </div>
+                            </div>
+
+                            <div class="stat-card">
+                                <div class="stat-icon icon-yellow">
+                                    <i class="fa-solid fa-clock"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <h4>Pending Requests</h4>
+                                    <div class="stat-number" id="admin-kpi-pending">0</div>
+                                </div>
+                            </div>
+
+                            <div class="stat-card">
+                                <div class="stat-icon icon-green">
+                                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <h4>Total Revenue</h4>
+                                    <div class="stat-number" id="admin-kpi-revenue">₹0</div>
+                                </div>
+                            </div>
+
+                            <div class="stat-card">
+                                <div class="stat-icon icon-red">
+                                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <h4>Under Maintenance</h4>
+                                    <div class="stat-number" id="admin-kpi-maintenance">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Analytics Charts Grid -->
+                        <div class="charts-grid" style="margin-top: 24px;">
+                            <div class="chart-card">
+                                <div class="chart-card-header">
+                                    <h3><i class="fa-solid fa-chart-simple text-gold"></i> Monthly Bookings & Occupancy Trend</h3>
+                                </div>
+                                <div class="chart-container">
+                                    <canvas id="monthlyTrendChart"></canvas>
+                                </div>
+                            </div>
+
+                            <div class="chart-card">
+                                <div class="chart-card-header">
+                                    <h3><i class="fa-solid fa-chart-pie text-gold"></i> Event Type Distribution</h3>
+                                </div>
+                                <div class="chart-container">
+                                    <canvas id="eventTypeChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Bookings Table Preview -->
+                        <div class="content-card" style="margin-top: 24px;">
+                            <div class="card-header-flex">
+                                <div>
+                                    <h3 style="font-size: 1.2rem; color: var(--navy-primary);">Recent Reservation Submissions</h3>
+                                    <p style="font-size: 0.82rem; color: var(--text-muted);">Quick look at the latest community booking applications.</p>
+                                </div>
+                                <button class="btn btn-outline btn-sm" onclick="document.querySelector('.sidebar-nav-item[data-tab=\'bookings\']').click()">
+                                    View All Bookings <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Ref #</th>
+                                            <th>Applicant</th>
+                                            <th>Hall</th>
+                                            <th>Date</th>
+                                            <th>Total Tariff</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-recent-bookings-tbody">
+                                        <!-- Dynamically loaded -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: HALL MANAGEMENT -->
+                    <div id="tab-halls" class="dashboard-tab-pane" style="display: none;">
+                        <div class="content-card">
+                            <div class="card-header-flex">
+                                <div>
+                                    <h3 style="font-size: 1.25rem; color: var(--navy-primary);">Community Halls Inventory</h3>
+                                    <p style="font-size: 0.85rem; color: var(--text-muted);">Add, edit, change availability status, or upload photos of municipal convention spaces.</p>
+                                </div>
+                                <button onclick="openAddHallModal()" class="btn btn-primary btn-sm">
+                                    <i class="fa-solid fa-plus"></i> Add New Hall
+                                </button>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Photo</th>
+                                            <th>Hall Name & Location</th>
+                                            <th>Max Capacity</th>
+                                            <th>Tariff / Day</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-halls-tbody">
+                                        <!-- Dynamically loaded -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: BOOKINGS MANAGEMENT -->
+                    <div id="tab-bookings" class="dashboard-tab-pane" style="display: none;">
+                        <div class="content-card">
+                            <div class="card-header-flex">
+                                <div>
+                                    <h3 style="font-size: 1.25rem; color: var(--navy-primary);">Manage Booking Requests</h3>
+                                    <p style="font-size: 0.85rem; color: var(--text-muted);">Review pending applications, approve verified slots, or reject conflicting submissions.</p>
+                                </div>
+
+                                <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                                    <input type="text" id="admin-booking-search" class="form-control" placeholder="Search reference or client..." style="width: 220px;" oninput="renderBookingsTable()">
+                                    <select id="admin-booking-filter-status" class="form-control" style="width: 140px;" onchange="renderBookingsTable()">
+                                        <option value="all">All Statuses</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="approved">Approved</option>
+                                        <option value="rejected">Rejected</option>
+                                        <option value="cancelled">Cancelled</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                       <p style="font-size:0.78rem;color:var(--text-muted);margin:0 0 6px;text-align:right;"><i class="fa-solid fa-left-right"></i>&nbsp;Scroll right to see Actions</p>     <div class="table-responsive">
+                                <table class="custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Reference ID</th>
+                                            <th>Applicant Details</th>
+                                            <th>Hall</th>
+                                            <th>Date & Slot</th>
+                                            <th>Event & Guests</th>
+                                            <th>Total Tariff</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-bookings-tbody">
+                                        <!-- Dynamically loaded -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: MAINTENANCE MANAGEMENT -->
+                    <div id="tab-maintenance" class="dashboard-tab-pane" style="display: none;">
+                        <div class="content-card">
+                            <div class="card-header-flex">
+                                <div>
+                                    <h3 style="font-size: 1.25rem; color: var(--navy-primary);">Facility Maintenance Schedules</h3>
+                                    <p style="font-size: 0.85rem; color: var(--text-muted);">
+                                        Scheduled maintenance automatically disables user booking requests for the specified date range.
+                                    </p>
+                                </div>
+                                <button onclick="openScheduleMaintenanceModal()" class="btn btn-navy btn-sm">
+                                    <i class="fa-solid fa-plus"></i> Schedule Maintenance
+                                </button>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Community Hall</th>
+                                            <th>Maintenance Reason / Work Description</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-maintenance-tbody">
+                                        <!-- Dynamically loaded -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </main>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================
+         MODALS
+         ========================================================= -->
+
+    <!-- Modal: Add New Hall -->
+    <div id="add-hall-modal" class="modal-overlay">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-plus-circle text-gold"></i> Add New Community Hall</h3>
+                <button class="modal-close-btn" onclick="closeModal('add-hall-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="add-hall-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-landmark"></i> Hall Name *</label>
+                            <input type="text" id="hall-name" class="form-control" placeholder="e.g. Indiranagar Grand Banquet" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-location-dot"></i> Zone / Area *</label>
+                            <input type="text" id="hall-location" class="form-control" placeholder="e.g. Indiranagar, Bangalore" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group-full">
+                        <label><i class="fa-solid fa-map-pin"></i> Complete Address *</label>
+                        <input type="text" id="hall-address" class="form-control" placeholder="Complete street address with postal code" required>
+                    </div>
+
+                    <div class="form-row" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-users"></i> Seating Capacity *</label>
+                            <input type="number" id="hall-capacity" class="form-control" placeholder="e.g. 800" min="50" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-tag"></i> Price Per Day (₹) *</label>
+                            <input type="number" id="hall-price" class="form-control" placeholder="e.g. 50000" min="5000" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-user-plus text-gold"></i> Per Guest Rate (₹) *</label>
+                            <input type="number" id="hall-guest-price" class="form-control" placeholder="e.g. 100" min="0" value="100" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-shield-halved"></i> Caution Deposit (₹)</label>
+                            <input type="number" id="hall-deposit" class="form-control" placeholder="e.g. 10000" value="5000">
+                        </div>
+                    </div>
+
+                    <div class="form-group-full">
+                        <label><i class="fa-solid fa-image"></i> Hall Image URL *</label>
+                        <input type="url" id="hall-image" class="form-control" placeholder="https://images.unsplash.com/..." required>
+                    </div>
+
+                    <div class="form-group-full">
+                        <label><i class="fa-solid fa-list-check"></i> Facilities (Comma Separated) *</label>
+                        <input type="text" id="hall-facilities" class="form-control" placeholder="Central AC, Grand Stage, Dining Hall, Valet Parking, PA System, Generator" required>
+                    </div>
+
+                    <div class="form-group-full">
+                        <label><i class="fa-solid fa-align-left"></i> Description *</label>
+                        <textarea id="hall-description" class="form-control" rows="3" placeholder="Overview of hall architectural features, acoustics, and dining capacity..." required></textarea>
+                    </div>
+
+                    <div class="form-group-full">
+                        <label><i class="fa-solid fa-gavel"></i> Rules & Guidelines</label>
+                        <textarea id="hall-rules" class="form-control" rows="2" placeholder="Sound cutoff at 10 PM, vegetarian restrictions, etc."></textarea>
+                    </div>
+
+                    <div class="modal-footer" style="padding-left: 0; padding-right: 0; background: transparent;">
+                        <button type="button" class="btn btn-outline btn-sm" onclick="closeModal('add-hall-modal')">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm"><i class="fa-solid fa-floppy-disk"></i> Save Hall</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Edit Hall -->
+    <div id="edit-hall-modal" class="modal-overlay">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-pen-to-square text-gold"></i> Edit Community Hall Information</h3>
+                <button class="modal-close-btn" onclick="closeModal('edit-hall-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-hall-form">
+                    <input type="hidden" id="edit-hall-id">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Hall Name *</label>
+                            <input type="text" id="edit-hall-name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Zone / Area *</label>
+                            <input type="text" id="edit-hall-location" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group-full">
+                        <label>Complete Address *</label>
+                        <input type="text" id="edit-hall-address" class="form-control" required>
+                    </div>
+
+                    <div class="form-row" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+                        <div class="form-group">
+                            <label>Seating Capacity *</label>
+                            <input type="number" id="edit-hall-capacity" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Price Per Day (₹) *</label>
+                            <input type="number" id="edit-hall-price" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Per Guest Rate (₹) *</label>
+                            <input type="number" id="edit-hall-guest-price" class="form-control" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Caution Deposit (₹)</label>
+                            <input type="number" id="edit-hall-deposit" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Availability Status</label>
+                            <select id="edit-hall-status" class="form-control">
+                                <option value="available">Available</option>
+                                <option value="maintenance">Under Maintenance</option>
+                                <option value="inactive">Inactive / Closed</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Image URL *</label>
+                            <input type="url" id="edit-hall-image" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group-full">
+                        <label>Facilities (Comma separated)</label>
+                        <input type="text" id="edit-hall-facilities" class="form-control" required>
+                    </div>
+
+                    <div class="form-group-full">
+                        <label>Description</label>
+                        <textarea id="edit-hall-description" class="form-control" rows="3" required></textarea>
+                    </div>
+
+                    <div class="form-group-full">
+                        <label>Rules & Guidelines</label>
+                        <textarea id="edit-hall-rules" class="form-control" rows="2"></textarea>
+                    </div>
+
+                    <div class="modal-footer" style="padding-left: 0; padding-right: 0; background: transparent;">
+                        <button type="button" class="btn btn-outline btn-sm" onclick="closeModal('edit-hall-modal')">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm"><i class="fa-solid fa-floppy-disk"></i> Update Hall Details</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Schedule Maintenance -->
+    <div id="schedule-maintenance-modal" class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-header" style="background: linear-gradient(135deg, #78350f 0%, #b45309 100%);">
+                <h3><i class="fa-solid fa-screwdriver-wrench"></i> Schedule Hall Maintenance</h3>
+                <button class="modal-close-btn" onclick="closeModal('schedule-maintenance-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="schedule-maintenance-form">
+                    <div class="form-group-full">
+                        <label><i class="fa-solid fa-landmark"></i> Select Hall for Maintenance *</label>
+                        <select id="maint-hall-id" class="form-control" required>
+                            <!-- Dynamically loaded -->
+                        </select>
+                    </div>
+
+                    <div class="form-group-full">
+                        <label><i class="fa-solid fa-wrench"></i> Maintenance Reason / Description *</label>
+                        <input type="text" id="maint-reason" class="form-control" placeholder="e.g. Annual Electrical Rewiring, AC Duct Servicing, Floor Polishing" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-calendar"></i> Maintenance Start Date *</label>
+                            <input type="date" id="maint-start-date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-calendar"></i> Maintenance End Date *</label>
+                            <input type="date" id="maint-end-date" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group-full">
+                        <label><i class="fa-solid fa-note-sticky"></i> Maintenance Notes / Contractor</label>
+                        <textarea id="maint-notes" class="form-control" rows="2" placeholder="Civil works contractor contact, expected noise levels, etc."></textarea>
+                    </div>
+
+                    <div class="caution-notice" style="margin-top: 14px;">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>Scheduling maintenance prevents all public users from selecting or booking this hall across the specified blackout window.</span>
+                    </div>
+
+                    <div class="modal-footer" style="padding-left: 0; padding-right: 0; background: transparent;">
+                        <button type="button" class="btn btn-outline btn-sm" onclick="closeModal('schedule-maintenance-modal')">Cancel</button>
+                        <button type="submit" class="btn btn-navy btn-sm"><i class="fa-solid fa-calendar-xmark"></i> Confirm Schedule</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Smart Community Hall Booking System. Designed for College Engineering Demonstration. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

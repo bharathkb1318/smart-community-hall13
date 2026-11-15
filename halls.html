@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Community Halls | Smart Community Hall Booking System</title>
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/forms.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="nav-brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-landmark"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>Smart Community Hall</h1>
+                    <span>Booking Management System</span>
+                </div>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="halls.html" class="nav-link active">Find Halls</a></li>
+                <li><a href="booking.html" class="nav-link">Book Now</a></li>
+                <li><a href="index.html#features" class="nav-link">Features</a></li>
+                <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+
+            <div class="nav-actions" id="nav-actions">
+                <!-- Dynamically populated by auth.js -->
+            </div>
+
+            <button class="mobile-menu-btn" aria-label="Toggle Navigation">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Header Banner -->
+    <section style="background: linear-gradient(135deg, var(--navy-darker) 0%, var(--navy-primary) 100%); color: var(--white); padding: 50px 0 60px; text-align: center; border-bottom: 2px solid var(--gold-primary);">
+        <div class="container">
+            <span class="section-tag"><i class="fa-solid fa-building-columns text-gold"></i> Community Hall Catalog</span>
+            <h1 style="color: var(--white); font-size: 2.5rem; margin-bottom: 12px;">Discover & Reserve Event Venues</h1>
+            <p style="color: #cbd5e1; max-width: 680px; margin: 0 auto; font-size: 1.05rem;">
+                Browse air-conditioned auditoriums, traditional wedding halls, and open garden pavilions with live availability status and verified amenities.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Listing Area -->
+    <section class="section" style="padding: 50px 0 90px;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: 300px 1fr; gap: 36px; align-items: flex-start;" class="listing-layout">
+                
+                <!-- Filter Sidebar -->
+                <aside style="background: var(--white); padding: 28px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid var(--border-light); position: sticky; top: 90px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border-light); padding-bottom: 12px;">
+                        <h3 style="font-size: 1.15rem; color: var(--navy-primary);"><i class="fa-solid fa-sliders text-gold"></i> Filter Halls</h3>
+                        <button id="btn-reset-filters" class="btn btn-outline btn-sm" style="padding: 4px 10px; font-size: 0.75rem;">
+                            Reset
+                        </button>
+                    </div>
+
+                    <!-- Search Input -->
+                    <div class="form-group-full" style="margin-bottom: 18px;">
+                        <label style="font-size: 0.82rem; font-weight: 700; color: var(--navy-primary); display: block; margin-bottom: 6px;">
+                            Search Keyword
+                        </label>
+                        <input type="text" id="filter-search" class="form-control" placeholder="Search by name or landmark...">
+                    </div>
+
+                    <!-- Location Dropdown -->
+                    <div class="form-group-full" style="margin-bottom: 18px;">
+                        <label style="font-size: 0.82rem; font-weight: 700; color: var(--navy-primary); display: block; margin-bottom: 6px;">
+                            Zone / Area
+                        </label>
+                        <select id="filter-location" class="form-control">
+                            <option value="all">All Locations</option>
+                            <option value="Indiranagar">Indiranagar</option>
+                            <option value="Jayanagar">Jayanagar</option>
+                            <option value="Malleshwaram">Malleshwaram</option>
+                            <option value="Whitefield">Whitefield</option>
+                            <option value="Kanakapura Road">Kanakapura Road</option>
+                            <option value="Rajajinagar">Rajajinagar</option>
+                            <option value="Koramangala">Koramangala</option>
+                        </select>
+                    </div>
+
+                    <!-- Date Filter -->
+                    <div class="form-group-full" style="margin-bottom: 18px;">
+                        <label style="font-size: 0.82rem; font-weight: 700; color: var(--navy-primary); display: block; margin-bottom: 6px;">
+                            Check Specific Date
+                        </label>
+                        <input type="date" id="filter-date" class="form-control">
+                    </div>
+
+                    <!-- Min Seating Capacity -->
+                    <div class="form-group-full" style="margin-bottom: 18px;">
+                        <label style="font-size: 0.82rem; font-weight: 700; color: var(--navy-primary); display: block; margin-bottom: 6px;">
+                            Min Seating Capacity
+                        </label>
+                        <select id="filter-capacity" class="form-control">
+                            <option value="">Any Capacity</option>
+                            <option value="200">200+ Guests</option>
+                            <option value="400">400+ Guests</option>
+                            <option value="600">600+ Guests</option>
+                            <option value="1000">1000+ Guests</option>
+                        </select>
+                    </div>
+
+                    <!-- Max Price Slider -->
+                    <div class="form-group-full" style="margin-bottom: 22px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                            <label style="font-size: 0.82rem; font-weight: 700; color: var(--navy-primary);">Max Price / Day</label>
+                            <span id="price-value-display" style="font-weight: 700; color: var(--gold-dark); font-size: 0.85rem;">₹1,00,000</span>
+                        </div>
+                        <input type="range" id="filter-price" min="15000" max="100000" step="5000" value="100000" style="width: 100%; accent-color: var(--gold-primary);">
+                    </div>
+
+                    <!-- Facilities Checkboxes -->
+                    <div class="form-group-full">
+                        <label style="font-size: 0.82rem; font-weight: 700; color: var(--navy-primary); display: block; margin-bottom: 10px;">
+                            Mandatory Facilities
+                        </label>
+                        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.88rem;">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" value="AC" class="facility-checkbox"> Air Conditioning
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" value="Stage" class="facility-checkbox"> Grand Stage
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" value="Dining" class="facility-checkbox"> Dedicated Dining Hall
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" value="Parking" class="facility-checkbox"> Dedicated Car Parking
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" value="Sound" class="facility-checkbox"> Audio / Sound Setup
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" value="Generator" class="facility-checkbox"> Generator Backup
+                            </label>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Listing Grid & Controls -->
+                <main>
+                    <!-- Header Sort Controls -->
+                    <div style="background: var(--white); padding: 18px 24px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 14px;">
+                        <div>
+                            <span id="halls-count-badge" style="font-weight: 700; color: var(--navy-primary); font-size: 1.05rem;">
+                                Showing Venues
+                            </span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <label for="sort-by" style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">Sort By:</label>
+                            <select id="sort-by" class="form-control" style="width: auto; padding: 6px 12px; font-size: 0.88rem;">
+                                <option value="default">Recommended</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                                <option value="capacity-high">Capacity: Largest First</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Halls Card Grid -->
+                    <div class="halls-grid" id="halls-listing-container">
+                        <!-- Loaded dynamically by halls.js -->
+                    </div>
+                </main>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Smart Community Hall Booking System. Designed for College Engineering Demonstration. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/halls.js"></script>
+</body>
+</html>

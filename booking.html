@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hall Booking Reservation | Smart Community Hall Booking System</title>
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/forms.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="nav-brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-landmark"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>Smart Community Hall</h1>
+                    <span>Booking Management System</span>
+                </div>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="halls.html" class="nav-link">Find Halls</a></li>
+                <li><a href="booking.html" class="nav-link active">Book Now</a></li>
+                <li><a href="index.html#features" class="nav-link">Features</a></li>
+                <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+
+            <div class="nav-actions" id="nav-actions">
+                <!-- Dynamically populated by auth.js -->
+            </div>
+
+            <button class="mobile-menu-btn" aria-label="Toggle Navigation">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section style="background: linear-gradient(135deg, var(--navy-darker) 0%, var(--navy-primary) 100%); color: var(--white); padding: 45px 0 50px; text-align: center; border-bottom: 2px solid var(--gold-primary);">
+        <div class="container">
+            <span class="section-tag"><i class="fa-solid fa-file-pen text-gold"></i> Official Reservation Desk</span>
+            <h1 style="color: var(--white); font-size: 2.3rem; margin-bottom: 8px;">Book a Community Hall</h1>
+            <p style="color: #cbd5e1; max-width: 600px; margin: 0 auto; font-size: 1rem;">
+                Reserve your chosen venue with verified conflict protection and transparent tariff estimation.
+            </p>
+        </div>
+    </section>
+
+    <!-- Booking Form Section -->
+    <section class="booking-page">
+        <div class="container">
+            <div class="booking-grid">
+                
+                <!-- Main Booking Form Card -->
+                <div class="form-card">
+                    <div class="form-card-header">
+                        <h2>Reservation Application</h2>
+                        <p>Fill out the applicant details and event schedule. Overlapping slot conflicts are verified in real-time.</p>
+                    </div>
+
+                    <!-- Slot Conflict Alert Container -->
+                    <div id="slot-conflict-alert" class="slot-conflict-alert">
+                        <!-- Populated by booking.js if overlap detected -->
+                    </div>
+
+                    <form id="hall-booking-form">
+                        
+                        <!-- 1. Applicant Details -->
+                        <h3 style="font-size: 1.1rem; color: var(--navy-primary); margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-user-tag text-gold"></i> 1. Applicant Information
+                        </h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="booking-name"><i class="fa-solid fa-user"></i> Full Name *</label>
+                                <input type="text" id="booking-name" class="form-control" placeholder="e.g. Bharath Kumar" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="booking-phone"><i class="fa-solid fa-phone"></i> Contact Number *</label>
+                                <input type="tel" id="booking-phone" class="form-control" placeholder="e.g. +91 99001 23456" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group-full">
+                            <label for="booking-email" style="font-size: 0.82rem; font-weight: 700; color: var(--navy-primary); margin-bottom: 6px; display: block;">
+                                <i class="fa-solid fa-envelope"></i> Email Address *
+                            </label>
+                            <input type="email" id="booking-email" class="form-control" placeholder="e.g. bharath@example.com" required>
+                            <span class="input-hint">Booking confirmation & official receipt will be issued to this email.</span>
+                        </div>
+
+                        <!-- 2. Venue & Event Specifications -->
+                        <h3 style="font-size: 1.1rem; color: var(--navy-primary); margin: 28px 0 16px; display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-calendar-days text-gold"></i> 2. Venue & Event Details
+                        </h3>
+
+                        <div class="form-group-full">
+                            <label for="booking-hall" style="font-size: 0.82rem; font-weight: 700; color: var(--navy-primary); margin-bottom: 6px; display: block;">
+                                <i class="fa-solid fa-landmark"></i> Select Community Hall *
+                            </label>
+                            <select id="booking-hall" class="form-control" required>
+                                <option value="">Loading available halls...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="booking-event-type"><i class="fa-solid fa-champagne-glasses"></i> Event Type *</label>
+                                <select id="booking-event-type" class="form-control" required>
+                                    <option value="">Select Event Type</option>
+                                    <option value="Wedding">Wedding / Marriage</option>
+                                    <option value="Reception">Wedding Reception</option>
+                                    <option value="Birthday">Birthday Celebration</option>
+                                    <option value="Meeting">Corporate Meeting / Conference</option>
+                                    <option value="Cultural">Cultural Performance / Arangetram</option>
+                                    <option value="Exhibition">Exhibition / Trade Fair</option>
+                                    <option value="Anniversary">Family Anniversary / Gathering</option>
+                                    <option value="Other">Other Community Event</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="booking-guests"><i class="fa-solid fa-users"></i> Number of Guests *</label>
+                                <input type="number" id="booking-guests" class="form-control" min="10" value="100" placeholder="e.g. 500" required>
+                                <span id="guest-capacity-error" class="input-error"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="booking-date"><i class="fa-solid fa-calendar-day"></i> Booking Date *</label>
+                                <input type="date" id="booking-date" class="form-control" required>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div class="form-group">
+                                    <label for="booking-start-time"><i class="fa-solid fa-clock"></i> Start Time *</label>
+                                    <input type="time" id="booking-start-time" class="form-control" value="08:00" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="booking-end-time"><i class="fa-solid fa-clock"></i> End Time *</label>
+                                    <input type="time" id="booking-end-time" class="form-control" value="22:00" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3. Additional Requirements -->
+                        <h3 style="font-size: 1.1rem; color: var(--navy-primary); margin: 28px 0 16px; display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-list-check text-gold"></i> 3. Additional Requirements (Optional)
+                        </h3>
+
+                        <div class="checkbox-grid">
+                            <label class="custom-checkbox-card">
+                                <input type="checkbox" name="req" value="Catering Area Setup">
+                                <span>Catering Area Setup</span>
+                            </label>
+                            <label class="custom-checkbox-card">
+                                <input type="checkbox" name="req" value="Projector & AV Screen">
+                                <span>HD Projector & AV Screen</span>
+                            </label>
+                            <label class="custom-checkbox-card">
+                                <input type="checkbox" name="req" value="Stage Red Carpet & Truss">
+                                <span>Stage Red Carpet & Truss</span>
+                            </label>
+                            <label class="custom-checkbox-card">
+                                <input type="checkbox" name="req" value="Generator Backup">
+                                <span>24/7 Generator Backup</span>
+                            </label>
+                            <label class="custom-checkbox-card">
+                                <input type="checkbox" name="req" value="VIP Parking Coordination">
+                                <span>VIP Parking Coordination</span>
+                            </label>
+                            <label class="custom-checkbox-card">
+                                <input type="checkbox" name="req" value="Cleaning Service Post-Event">
+                                <span>Post-Event Sanitation Team</span>
+                            </label>
+                        </div>
+
+                        <div class="form-group-full" style="margin-top: 20px;">
+                            <label for="booking-special-requests" style="font-size: 0.82rem; font-weight: 700; color: var(--navy-primary); margin-bottom: 6px; display: block;">
+                                Special Instructions or Mandap Details
+                            </label>
+                            <textarea id="booking-special-requests" class="form-control" rows="3" placeholder="Enter any floral setup timings, microphone requirements, or havan guidelines..."></textarea>
+                        </div>
+
+                        <div style="margin: 24px 0 28px;">
+                            <label style="display: flex; align-items: flex-start; gap: 10px; font-size: 0.88rem; cursor: pointer; color: var(--text-secondary);">
+                                <input type="checkbox" id="booking-terms" required style="accent-color: var(--gold-primary); width: 18px; height: 18px; margin-top: 2px;">
+                                <span>I agree to the Community Hall booking regulations, noise cutoff regulations at 10:00 PM, and understand that the caution deposit is refundable upon post-event inspection.</span>
+                            </label>
+                        </div>
+
+                        <button type="submit" id="btn-submit-booking" class="btn btn-primary btn-lg" style="width: 100%;">
+                            <i class="fa-solid fa-paper-plane"></i> Submit Reservation Request
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Order Summary & Cost Breakdown Card -->
+                <aside class="order-summary-card">
+                    <div class="summary-header">
+                        <h3><i class="fa-solid fa-receipt"></i> Tariff Breakdown</h3>
+                        <p style="font-size: 0.82rem; color: #cbd5e1; margin-top: 4px;">Standardized Civic Rates</p>
+                    </div>
+
+                    <div class="summary-body">
+                        <!-- Hall Preview Box -->
+                        <div id="summary-hall-preview">
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">Select a hall on the left to see price details.</p>
+                        </div>
+
+                        <div class="price-breakdown-list">
+                            <div class="price-item">
+                                <span>Hall Base Rent (1 Day)</span>
+                                <span id="summary-rent" style="font-weight: 600;">Loading...</span>
+                            </div>
+                            <div class="price-item" id="summary-guests-row">
+                                <span>Guest Facilities (<span id="summary-guests-badge">100</span> guests × ₹<span id="summary-guest-rate">—</span>)</span>
+                                <span id="summary-guest-fee" style="font-weight: 600;">Loading...</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Civic GST / Cess (18%)</span>
+                                <span id="summary-tax" style="font-weight: 600;">Loading...</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Refundable Caution Deposit</span>
+                                <span id="summary-deposit" style="font-weight: 600;">Loading...</span>
+                            </div>
+                            <div class="price-item total">
+                                <span>Estimated Total</span>
+                                <span id="summary-total">Loading...</span>
+                            </div>
+                        </div>
+
+                        <div class="caution-notice">
+                            <i class="fa-solid fa-circle-info" style="margin-top: 2px;"></i>
+                            <div>
+                                <strong>Double-Booking Prevention:</strong> Our system strictly verifies hall calendar availability before confirming your slot.
+                            </div>
+                        </div>
+
+                        <div style="font-size: 0.82rem; color: var(--text-muted); text-align: center; border-top: 1px solid var(--border-light); padding-top: 16px;">
+                            <i class="fa-solid fa-lock text-gold"></i> Secure Reservation Processing
+                        </div>
+                    </div>
+                </aside>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Smart Community Hall Booking System. Designed for College Engineering Demonstration. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/booking.js"></script>
+</body>
+</html>

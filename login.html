@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | Smart Community Hall Booking System</title>
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/forms.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="nav-brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-landmark"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>Smart Community Hall</h1>
+                    <span>Booking Management System</span>
+                </div>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="halls.html" class="nav-link">Find Halls</a></li>
+                <li><a href="booking.html" class="nav-link">Book Now</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="register.html" class="btn btn-primary btn-sm">
+                    <i class="fa-solid fa-user-plus"></i> Create Account
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Container -->
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2>Welcome Back</h2>
+                <p>Sign in to access your bookings or manage civic halls</p>
+            </div>
+
+            <div class="auth-body">
+                <!-- Role Selector Tabs -->
+                <div class="auth-role-tabs">
+                    <div class="role-tab active" id="tab-member-role" onclick="selectRole('user')">
+                        <i class="fa-solid fa-user"></i> Community Member
+                    </div>
+                    <div class="role-tab" id="tab-admin-role" onclick="selectRole('admin')">
+                        <i class="fa-solid fa-user-shield"></i> System Admin
+                    </div>
+                </div>
+
+                <!-- 1-Click Demo Login Helper -->
+                <div class="demo-credentials-box">
+                    <div style="font-weight: 700; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center;">
+                        <span><i class="fa-solid fa-key text-gold"></i> Demo Quick Login</span>
+                        <button type="button" onclick="autoFillDemoCredentials()" class="btn btn-outline btn-sm" style="padding: 2px 8px; font-size: 0.72rem;">
+                            Auto Fill
+                        </button>
+                    </div>
+                    <div id="demo-info-text">
+                        User: <code>bharath@example.com</code> | Pass: <code>user123</code>
+                    </div>
+                </div>
+
+                <form id="login-form">
+                    <div class="form-group-full">
+                        <label for="login-email" style="font-size: 0.82rem; font-weight: 700; color: var(--navy-primary); margin-bottom: 6px; display: block;">
+                            <i class="fa-solid fa-envelope"></i> Email Address
+                        </label>
+                        <input type="email" id="login-email" class="form-control" placeholder="name@example.com" value="bharath@example.com" required>
+                    </div>
+
+                    <div class="form-group-full">
+                        <label for="login-password" style="font-size: 0.82rem; font-weight: 700; color: var(--navy-primary); margin-bottom: 6px; display: block;">
+                            <i class="fa-solid fa-lock"></i> Password
+                        </label>
+                        <input type="password" id="login-password" class="form-control" placeholder="••••••••" value="user123" required>
+                    </div>
+
+                    <button type="submit" id="btn-login-submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
+                        <i class="fa-solid fa-right-to-bracket"></i> Sign In to Account
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    Don't have a registered account yet? <a href="register.html">Register Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Smart Community Hall Booking System. Designed for College Engineering Demonstration. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        let selectedRole = 'user';
+
+        function selectRole(role) {
+            selectedRole = role;
+            const memberTab = document.getElementById('tab-member-role');
+            const adminTab = document.getElementById('tab-admin-role');
+            const demoInfo = document.getElementById('demo-info-text');
+            const emailInput = document.getElementById('login-email');
+            const passInput = document.getElementById('login-password');
+
+            if (role === 'admin') {
+                memberTab.classList.remove('active');
+                adminTab.classList.add('active');
+                demoInfo.innerHTML = 'Admin: <code>admin@community.org</code> | Pass: <code>admin123</code>';
+                emailInput.value = 'admin@community.org';
+                passInput.value = 'admin123';
+            } else {
+                adminTab.classList.remove('active');
+                memberTab.classList.add('active');
+                demoInfo.innerHTML = 'User: <code>bharath@example.com</code> | Pass: <code>user123</code>';
+                emailInput.value = 'bharath@example.com';
+                passInput.value = 'user123';
+            }
+        }
+
+        function autoFillDemoCredentials() {
+            selectRole(selectedRole);
+        }
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+            const submitBtn = document.getElementById('btn-login-submit');
+
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...';
+            submitBtn.disabled = true;
+
+            const res = await Auth.login(email, password);
+
+            if (res.success) {
+                UI.showToast(`Welcome back, ${res.user.name}!`, 'success');
+                setTimeout(() => {
+                    const redirect = sessionStorage.getItem('sch_redirect');
+                    sessionStorage.removeItem('sch_redirect');
+
+                    if (redirect) {
+                        window.location.href = redirect;
+                    } else if (res.user.role === 'admin') {
+                        window.location.href = 'admin.html';
+                    } else {
+                        window.location.href = 'dashboard.html';
+                    }
+                }, 600);
+            } else {
+                UI.showToast(res.message || 'Login failed. Check credentials.', 'error');
+                submitBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Sign In to Account';
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

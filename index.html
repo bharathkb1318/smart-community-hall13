@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Community Hall Booking System | Premium Event Venues</title>
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+    <!-- Top Notice Bar -->
+    <div class="topbar">
+        <div class="container">
+            <div class="topbar-info">
+                <span><i class="fa-solid fa-phone"></i> Helpline: +91 8123280341</span>
+                <span><i class="fa-solid fa-envelope"></i> bookings@smartcommunityhall.org</span>
+                <span><i class="fa-solid fa-clock"></i> Civic Booking Desk: Mon - Sun (9:00 AM - 7:00 PM)</span>
+            </div>
+            <div>
+                <span><i class="fa-solid fa-certificate text-gold"></i> ISO 9001:2015 Certified Community Venues</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="nav-brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-landmark"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>Smart Community Hall</h1>
+                    <span>Booking Management System</span>
+                </div>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="halls.html" class="nav-link">Find Halls</a></li>
+                <li><a href="booking.html" class="nav-link">Book Now</a></li>
+                <li><a href="#features" class="nav-link">Features</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+
+            <div class="nav-actions" id="nav-actions">
+                <!-- Dynamically populated by auth.js -->
+                <a href="login.html" class="btn btn-outline-gold btn-sm"><i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In</a>
+                <a href="register.html" class="btn btn-primary btn-sm"><i class="fa-solid fa-user-plus"></i> Register</a>
+            </div>
+
+            <button class="mobile-menu-btn" aria-label="Toggle Navigation">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <span class="section-tag"><i class="fa-solid fa-crown text-gold"></i> Trusted Civic & Cultural Venues</span>
+                <h1>Find and Book Your Perfect Community Hall</h1>
+                <p>Discover majestic convention spaces, traditional wedding halls, and corporate banquets equipped with modern amenities at regulated community pricing.</p>
+                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                    <a href="halls.html" class="btn btn-primary btn-lg">
+                        <i class="fa-solid fa-compass"></i> Explore All Venues
+                    </a>
+                    <a href="booking.html" class="btn btn-outline-gold btn-lg">
+                        <i class="fa-solid fa-calendar-check"></i> Check Slot Availability
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hero Search Bar Card -->
+    <div class="container">
+        <div class="search-card">
+            <form id="hero-search-form" class="search-form">
+                <div class="form-group">
+                    <label for="search-location"><i class="fa-solid fa-location-dot"></i> Select Location</label>
+                    <select id="search-location" class="form-control">
+                        <option value="all">All Bangalore Zones</option>
+                        <option value="Indiranagar">Indiranagar (East)</option>
+                        <option value="Jayanagar">Jayanagar (South)</option>
+                        <option value="Malleshwaram">Malleshwaram (North)</option>
+                        <option value="Whitefield">Whitefield (Tech Corridor)</option>
+                        <option value="Kanakapura Road">Kanakapura Road (Lawn)</option>
+                        <option value="Rajajinagar">Rajajinagar (West)</option>
+                        <option value="Koramangala">Koramangala (Central)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="search-date"><i class="fa-solid fa-calendar-days"></i> Booking Date</label>
+                    <input type="date" id="search-date" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="search-capacity"><i class="fa-solid fa-users"></i> Min Seating Capacity</label>
+                    <select id="search-capacity" class="form-control">
+                        <option value="">Any Capacity</option>
+                        <option value="200">200+ Guests (Intimate)</option>
+                        <option value="500">500+ Guests (Medium)</option>
+                        <option value="800">800+ Guests (Grand)</option>
+                        <option value="1200">1200+ Guests (Mega Event)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="height: 48px;">
+                    <i class="fa-solid fa-magnifying-glass"></i> Search Halls
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Featured Available Community Halls -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag"><i class="fa-solid fa-sparkles"></i> Handpicked Venues</span>
+                <h2>Featured Community Halls</h2>
+                <p>Explore our most sought-after auditoriums, wedding banquets, and reception centers with transparent civic tariffs.</p>
+            </div>
+
+            <div class="halls-grid" id="featured-halls-grid">
+                <!-- Dynamically loaded by main.js -->
+            </div>
+
+            <div style="text-align: center; margin-top: 48px;">
+                <a href="halls.html" class="btn btn-navy btn-lg">
+                    <i class="fa-solid fa-list-check"></i> View All Community Halls
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features & Benefits Section -->
+    <section class="section bg-white" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag"><i class="fa-solid fa-gem"></i> Why Choose Us</span>
+                <h2>Smart Booking Advantages</h2>
+                <p>A digitized, transparent civic management platform built to eradicate double-bookings, broker markups, and reservation friction.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-box">
+                    <div class="feature-icon-circle">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+                    <h3>Conflict-Free Booking</h3>
+                    <p>Automated slot conflict engine prevents overlapping time reservations for the same hall in real-time.</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon-circle">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                    </div>
+                    <h3>Maintenance Shield</h3>
+                    <p>Halls scheduled for electrical or sanitary maintenance are automatically blacked out to prevent disruptions.</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon-circle">
+                        <i class="fa-solid fa-hand-holding-dollar"></i>
+                    </div>
+                    <h3>Transparent Pricing</h3>
+                    <p>Standardized civic rates, clear 18% civic cess, and 100% refundable security deposit with zero hidden fees.</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon-circle">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                    </div>
+                    <h3>Digital Invoices</h3>
+                    <p>Instant PDF-printable booking confirmation and payment receipts accessible directly from your user dashboard.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Banner -->
+    <section class="stats-banner">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>15+</h3>
+                    <p>Civic Community Halls</p>
+                </div>
+                <div class="stat-item">
+                    <h3>2,400+</h3>
+                    <p>Successful Events Hosted</p>
+                </div>
+                <div class="stat-item">
+                    <h3>99.4%</h3>
+                    <p>Positive Feedback</p>
+                </div>
+                <div class="stat-item">
+                    <h3>100%</h3>
+                    <p>Double-Booking Protection</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Location Section -->
+    <section class="section" id="contact">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag"><i class="fa-solid fa-headset"></i> Get In Touch</span>
+                <h2>Contact & Reservation Support</h2>
+                <p>Have questions regarding hall visits, sound permits, or catering regulations? Our civic hall coordinators are here to assist.</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                <div class="feature-box" style="text-align: left;">
+                    <h3 style="color: var(--navy-primary); margin-bottom: 12px;"><i class="fa-solid fa-building text-gold"></i> Central Administrative Office</h3>
+                    <p style="margin-bottom: 12px; color: var(--text-secondary);">
+                        Smart Community Hall Authority<br>
+                        Municipal Civic Complex, 100 Feet Road, Indiranagar<br>
+                        Bengaluru, Karnataka - 560038
+                    </p>
+                    <p style="color: var(--navy-primary); font-weight: 600;"><i class="fa-solid fa-phone text-gold"></i> +91 98450 11223</p>
+                    <p style="color: var(--navy-primary); font-weight: 600;"><i class="fa-solid fa-envelope text-gold"></i> support@smartcommunityhall.org</p>
+                </div>
+
+                <div class="feature-box" style="text-align: left;">
+                    <h3 style="color: var(--navy-primary); margin-bottom: 12px;"><i class="fa-solid fa-shield-halved text-gold"></i> Guidelines for Organizers</h3>
+                    <ul style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.8;">
+                        <li><i class="fa-solid fa-check text-gold"></i> Advance booking allowed up to 180 days prior to event.</li>
+                        <li><i class="fa-solid fa-check text-gold"></i> Sound decibels must follow state pollution control norms.</li>
+                        <li><i class="fa-solid fa-check text-gold"></i> 100% Refund of caution deposit within 3 banking days.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="nav-brand" style="margin-bottom: 16px;">
+                        <div class="brand-icon">
+                            <i class="fa-solid fa-landmark"></i>
+                        </div>
+                        <div class="brand-text">
+                            <h2 style="font-size: 1.25rem; color: #fff;">Smart Community Hall</h2>
+                            <span style="color: var(--gold-light);">Booking Management System</span>
+                        </div>
+                    </div>
+                    <p>A digitized civic infrastructure initiative designed to simplify public hall reservations, eliminate scheduling conflicts, and deliver transparent community event management.</p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="fa-solid fa-angle-right"></i> Home</a></li>
+                        <li><a href="halls.html"><i class="fa-solid fa-angle-right"></i> Community Halls</a></li>
+                        <li><a href="booking.html"><i class="fa-solid fa-angle-right"></i> Reserve Venue</a></li>
+                        <li><a href="dashboard.html"><i class="fa-solid fa-angle-right"></i> User Dashboard</a></li>
+                        <li><a href="admin.html"><i class="fa-solid fa-angle-right"></i> Admin Portal</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Hall Types</h4>
+                    <ul class="footer-links">
+                        <li><a href="halls.html?minCapacity=800"><i class="fa-solid fa-angle-right"></i> Grand Wedding Halls</a></li>
+                        <li><a href="halls.html?location=Jayanagar"><i class="fa-solid fa-angle-right"></i> Traditional Kalyana Mantapa</a></li>
+                        <li><a href="halls.html?minCapacity=200"><i class="fa-solid fa-angle-right"></i> Birthday & Party Halls</a></li>
+                        <li><a href="halls.html?location=Whitefield"><i class="fa-solid fa-angle-right"></i> Corporate Banquets</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Civic Helpline</h4>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>Civic Administrative Center, HAL 2nd Stage, Indiranagar, Bangalore</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-phone"></i>
+                            <span>+91 91135 37941 /63605 69462</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-envelope"></i>
+                            <span>helpdesk@smartcommunityhall.org</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Smart Community Hall Booking System. Designed for College Engineering Demonstration. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

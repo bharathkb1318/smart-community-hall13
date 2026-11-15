@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard | Smart Community Hall Booking System</title>
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/forms.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="nav-brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-landmark"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>Smart Community Hall</h1>
+                    <span>Booking Management System</span>
+                </div>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="halls.html" class="nav-link">Find Halls</a></li>
+                <li><a href="booking.html" class="nav-link">Book Now</a></li>
+                <li><a href="dashboard.html" class="nav-link active">Dashboard</a></li>
+            </ul>
+
+            <div class="nav-actions" id="nav-actions">
+                <!-- Dynamically populated by auth.js -->
+            </div>
+
+            <button class="mobile-menu-btn" aria-label="Toggle Navigation">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- User Dashboard Container -->
+    <section class="dashboard-page">
+        <div class="container">
+            <div class="dashboard-layout">
+                
+                <!-- Sidebar -->
+                <aside class="dashboard-sidebar">
+                    <div class="user-profile-card">
+                        <div class="user-avatar-large" id="user-avatar-initial">U</div>
+                        <h3 class="user-display-name">Community Member</h3>
+                        <p id="user-display-email">user@example.com</p>
+                    </div>
+
+                    <div class="sidebar-nav">
+                        <div class="sidebar-nav-item active" data-tab="bookings">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <span>My Bookings</span>
+                        </div>
+                        <div class="sidebar-nav-item" data-tab="profile">
+                            <i class="fa-solid fa-user-pen"></i>
+                            <span>Profile Settings</span>
+                        </div>
+                        <div class="sidebar-divider"></div>
+                        <div class="sidebar-nav-item" onclick="window.location.href='booking.html'">
+                            <i class="fa-solid fa-plus-circle"></i>
+                            <span>New Reservation</span>
+                        </div>
+                        <div class="sidebar-nav-item" onclick="Auth.logout()" style="color: var(--danger);">
+                            <i class="fa-solid fa-power-off"></i>
+                            <span>Log Out</span>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Content Pane -->
+                <main class="dashboard-content">
+                    
+                    <!-- Top Greeting Bar -->
+                    <div class="dashboard-topbar">
+                        <div class="dashboard-title">
+                            <h2>Welcome, <span class="user-display-name gold-text">Member</span>!</h2>
+                            <p>Manage your community hall booking reservations, print payment receipts, or update applicant profile.</p>
+                        </div>
+                        <div>
+                            <a href="booking.html" class="btn btn-primary btn-sm">
+                                <i class="fa-solid fa-calendar-plus"></i> Book Another Hall
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- TAB 1: BOOKINGS LIST & KPIS -->
+                    <div id="tab-bookings" class="dashboard-tab-pane" style="display: block;">
+                        <!-- KPI Stat Cards -->
+                        <div class="stats-cards-grid" style="margin-bottom: 24px;">
+                            <div class="stat-card">
+                                <div class="stat-icon icon-blue">
+                                    <i class="fa-solid fa-layer-group"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <h4>Total Bookings</h4>
+                                    <div class="stat-number" id="kpi-total-bookings">0</div>
+                                </div>
+                            </div>
+
+                            <div class="stat-card">
+                                <div class="stat-icon icon-green">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <h4>Approved</h4>
+                                    <div class="stat-number" id="kpi-approved-bookings">0</div>
+                                </div>
+                            </div>
+
+                            <div class="stat-card">
+                                <div class="stat-icon icon-yellow">
+                                    <i class="fa-solid fa-hourglass-half"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <h4>Pending Review</h4>
+                                    <div class="stat-number" id="kpi-pending-bookings">0</div>
+                                </div>
+                            </div>
+
+                            <div class="stat-card">
+                                <div class="stat-icon icon-red">
+                                    <i class="fa-solid fa-ban"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <h4>Cancelled</h4>
+                                    <div class="stat-number" id="kpi-cancelled-bookings">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bookings History Table Card -->
+                        <div class="content-card">
+                            <div class="card-header-flex">
+                                <div>
+                                    <h3 style="font-size: 1.25rem; color: var(--navy-primary); margin-bottom: 4px;">Booking History</h3>
+                                    <p style="font-size: 0.85rem; color: var(--text-muted);">Real-time status updates from the community hall administrative desk.</p>
+                                </div>
+
+                                <!-- Filter Buttons -->
+                                <div class="filter-tabs">
+                                    <button class="tab-btn active" data-status="all">All</button>
+                                    <button class="tab-btn" data-status="approved">Approved</button>
+                                    <button class="tab-btn" data-status="pending">Pending</button>
+                                    <button class="tab-btn" data-status="cancelled">Cancelled</button>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Reference ID</th>
+                                            <th>Community Hall</th>
+                                            <th>Event Schedule</th>
+                                            <th>Event Type</th>
+                                            <th>Total Tariff</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="user-bookings-tbody">
+                                        <!-- Dynamically rendered by dashboard.js -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: PROFILE SETTINGS -->
+                    <div id="tab-profile" class="dashboard-tab-pane" style="display: none;">
+                        <div class="content-card">
+                            <div class="card-header-flex">
+                                <div>
+                                    <h3 style="font-size: 1.25rem; color: var(--navy-primary);">Applicant Profile Settings</h3>
+                                    <p style="font-size: 0.85rem; color: var(--text-muted);">Update your contact information for booking confirmations and invoices.</p>
+                                </div>
+                            </div>
+
+                            <form id="user-profile-form" style="max-width: 650px;">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="profile-name"><i class="fa-solid fa-user"></i> Full Name</label>
+                                        <input type="text" id="profile-name" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profile-phone"><i class="fa-solid fa-phone"></i> Contact Phone</label>
+                                        <input type="tel" id="profile-phone" class="form-control" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group-full">
+                                    <label for="profile-email"><i class="fa-solid fa-envelope"></i> Email Address (Read-only)</label>
+                                    <input type="email" id="profile-email" class="form-control" disabled style="background-color: var(--border-light); cursor: not-allowed;">
+                                </div>
+
+                                <div class="form-group-full">
+                                    <label for="profile-address"><i class="fa-solid fa-location-dot"></i> Residential / Organization Address</label>
+                                    <textarea id="profile-address" class="form-control" rows="3" placeholder="Enter your complete address for civic receipt invoicing..."></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary" style="margin-top: 10px;">
+                                    <i class="fa-solid fa-floppy-disk"></i> Save Profile Changes
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                </main>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Smart Community Hall Booking System. Designed for College Engineering Demonstration. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
